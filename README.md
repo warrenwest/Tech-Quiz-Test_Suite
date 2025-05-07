@@ -1,1 +1,0 @@
-# Tech-Quiz-Test-Suite

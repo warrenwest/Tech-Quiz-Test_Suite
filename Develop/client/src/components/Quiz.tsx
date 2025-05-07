@@ -1,96 +1,74 @@
-import { useState, } from 'react';
-import type { Question } from '../models/Question.js';
-import { getQuestions } from '../services/questionApi.js';
+import React, { useState, useEffect } from 'react';
+import { Question } from '../models/Question'; // Import the Question interface
+import { Answer } from '../models/Answer'; // Import the Answer interface
 
-const Quiz = () => {
+// Importing the mock questions data (assuming the questions are static for now)
+import { getQuestions } from '../services/questionApi'; // Update this with correct path if necessary
+
+const Quiz: React.FC = () => {
+  const [currentQuestionIndex] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [isQuizComplete, setIsQuizComplete] = useState<boolean>(false);
+
+  // Get current question based on currentQuestionIndex
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-  const [quizStarted, setQuizStarted] = useState(false);
+  const currentQuestion: Question | undefined = questions[currentQuestionIndex];
 
-  const getRandomQuestions = async () => {
-    try {
-      const questions = await getQuestions();
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      const fetchedQuestions = await getQuestions();
+      setQuestions(fetchedQuestions);
+    };
+    fetchQuestions();
+  }, []);
 
-      if (!questions) {
-        throw new Error('something went wrong!');
-      }
+  useEffect(() => {
+    // You can add additional logic to fetch the questions if needed
+    // For now, we are assuming the questions are static
+  }, []);
 
-      setQuestions(questions);
-    } catch (err) {
-      console.error(err);
-    }
+  const handleOptionClick = (index: number) => {
+    setSelectedOption(index); // Set the selected option based on user click
   };
 
-  const handleAnswerClick = (isCorrect: boolean) => {
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    if (nextQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-    } else {
-      setQuizCompleted(true);
-    }
+  const handleSubmit = () => {
+    // Here you could add logic to check the answer and keep track of score
+    setIsQuizComplete(true); // Mark the quiz as complete
   };
-
-  const handleStartQuiz = async () => {
-    await getRandomQuestions();
-    setQuizStarted(true);
-    setQuizCompleted(false);
-    setScore(0);
-    setCurrentQuestionIndex(0);
-  };
-
-  if (!quizStarted) {
-    return (
-      <div className="p-4 text-center">
-        <button className="btn btn-primary d-inline-block mx-auto" onClick={handleStartQuiz}>
-          Start Quiz
-        </button>
-      </div>
-    );
-  }
-
-  if (quizCompleted) {
-    return (
-      <div className="card p-4 text-center">
-        <h2>Quiz Completed</h2>
-        <div className="alert alert-success">
-          Your score: {score}/{questions.length}
-        </div>
-        <button className="btn btn-primary d-inline-block mx-auto" onClick={handleStartQuiz}>
-          Take New Quiz
-        </button>
-      </div>
-    );
-  }
-
-  if (questions.length === 0) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
-  const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className='card p-4'>
-      <h2>{currentQuestion.question}</h2>
-      <div className="mt-3">
-      {currentQuestion.answers.map((answer, index) => (
-        <div key={index} className="d-flex align-items-center mb-2">
-          <button className="btn btn-primary" onClick={() => handleAnswerClick(answer.isCorrect)}>{index + 1}</button>
-          <div className="alert alert-secondary mb-0 ms-2 flex-grow-1">{answer.text}</div>
+    <div data-cy="quiz-container">
+      <div data-cy={`question-${currentQuestionIndex}`}>
+        <h2>{currentQuestion.question}</h2>
+        <div>
+          {currentQuestion.answers.map((answer: Answer, index: number) => (
+            <button
+              key={index}
+              data-cy={`option-${currentQuestionIndex}-${index}`}
+              className={`btn ${selectedOption === index ? 'selected' : ''}`}
+              onClick={() => handleOptionClick(index)}
+            >
+              {answer.text}
+            </button>
+          ))}
         </div>
-      ))}
       </div>
+
+      <div>
+        <button
+          data-cy="submit-button"
+          onClick={handleSubmit}
+          disabled={selectedOption === null} // Disable submit if no option is selected
+        >
+          Submit
+        </button>
+      </div>
+
+      {isQuizComplete && (
+        <div data-cy="result-message">
+          <p>Thank you for completing the quiz!</p>
+        </div>
+      )}
     </div>
   );
 };

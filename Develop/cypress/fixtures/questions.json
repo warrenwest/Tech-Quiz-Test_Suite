@@ -1,0 +1,115 @@
+{
+    "questions": [
+      {
+        "_id": "1",
+        "question": "What is the capital of France?",
+        "answers": [
+          {
+            "text": "Paris",
+            "isCorrect": true
+          },
+          {
+            "text": "London",
+            "isCorrect": false
+          },
+          {
+            "text": "Berlin",
+            "isCorrect": false
+          },
+          {
+            "text": "Madrid",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "_id": "2",
+        "question": "Which planet is known as the Red Planet?",
+        "answers": [
+          {
+            "text": "Mars",
+            "isCorrect": true
+          },
+          {
+            "text": "Earth",
+            "isCorrect": false
+          },
+          {
+            "text": "Jupiter",
+            "isCorrect": false
+          },
+          {
+            "text": "Venus",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "_id": "3",
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "answers": [
+          {
+            "text": "William Shakespeare",
+            "isCorrect": true
+          },
+          {
+            "text": "Charles Dickens",
+            "isCorrect": false
+          },
+          {
+            "text": "Jane Austen",
+            "isCorrect": false
+          },
+          {
+            "text": "Mark Twain",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "_id": "4",
+        "question": "What is the largest ocean on Earth?",
+        "answers": [
+          {
+            "text": "Pacific Ocean",
+            "isCorrect": true
+          },
+          {
+            "text": "Atlantic Ocean",
+            "isCorrect": false
+          },
+          {
+            "text": "Indian Ocean",
+            "isCorrect": false
+          },
+          {
+            "text": "Southern Ocean",
+            "isCorrect": false
+          }
+        ]
+      },
+      {
+        "_id": "5",
+        "question": "What is the boiling point of water?",
+        "answers": [
+          {
+            "text": "100°C",
+            "isCorrect": true
+          },
+          {
+            "text": "90°C",
+            "isCorrect": false
+          },
+          {
+            "text": "110°C",
+            "isCorrect": false
+          },
+          {
+            "text": "120°C",
+            "isCorrect": false
+          }
+        ]
+      }
+    ]
+  }
+  
